@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile | Sparkle Social</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <!-- Add ScrollTrigger plugin for scroll animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+</head>
+<body class="bg-gradient-to-br from-zinc-900 to-zinc-800 text-white">
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 w-full bg-zinc-900/80 backdrop-blur-sm z-50 px-4 py-3">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <h2 class="text-2xl font-bold bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
+                Sparkle Social
+            </h2>
+            <a href="/logout" class="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg transition-all duration-300 transform hover:scale-105">
+                Logout
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-6xl mx-auto pt-20 px-4 min-h-screen">
+        <!-- Profile Section -->
+        <div class="profile-section mb-10">
+            <div class="flex flex-col md:flex-row items-center gap-6 p-6 bg-zinc-800/50 rounded-xl backdrop-blur-sm">
+                <div class="profile-image-container w-32 h-32 rounded-full overflow-hidden ring-4 ring-blue-500 shadow-lg transform hover:scale-105 transition-all duration-300">
+                    <img class="w-full h-full object-cover" src="/images/uplodes/<%= user.profilepic %>" alt="Profile Picture">
+                </div>
+                <div class="flex-1">
+                    <h1 class="text-4xl font-bold mb-2">Hello, <%= user.name %></h1>
+                    <p class="text-zinc-400">@<%= user.username %></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create Post Section -->
+        <div class="create-post-section mb-10">
+            <div class="bg-zinc-800/30 rounded-xl p-6 backdrop-blur-sm">
+                <h3 class="text-xl font-semibold mb-4">Create a New Post</h3>
+                <form action="/post" method="post" class="space-y-4">
+                    <textarea 
+                        class="w-full p-4 bg-zinc-700/50 rounded-lg border border-zinc-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 transition-all duration-300 resize-none"
+                        name="content" 
+                        placeholder="What's on your mind?"
+                        rows="4"
+                    ></textarea>
+                    <button type="submit" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg transition-all duration-300 transform hover:scale-105">
+                        Post
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Posts Section -->
+        <div class="posts-section">
+            <h3 class="text-2xl font-bold mb-6">Your Posts</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <% user.posts.reverse().forEach((post)=>{ %>
+                    <div class="post-card opacity-0 bg-zinc-800/30 rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                        <div class="p-6">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="w-10 h-10 rounded-full overflow-hidden">
+                                    <img class="w-full h-full object-cover" src="/images/uplodes/<%= user.profilepic %>" alt="">
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold"><%= user.username %></h4>
+                                    <p class="text-xs text-zinc-400"><%= new Date(post.Date).toLocaleDateString() %></p>
+                                </div>
+                            </div>
+                            <p class="text-zinc-200 mb-4"><%= post.content %></p>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <a href="/likes/<%= post._id %>" class="like-btn flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors">
+                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z"/>
+                                        </svg>
+                                        <span><%= post.Likes.length %> <%= post.Likes.indexOf(user._id) === -1 ? "Like" : "Unlike" %></span>
+                                    </a>
+                                </div>
+                                <a href="/edit/<%= post._id %>" class="text-yellow-500 hover:text-yellow-400 transition-colors">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize GSAP
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Animate profile section
+        gsap.from('.profile-section', {
+            y: -100,
+            opacity: 0,
+            duration: 1,
+            ease: 'power3.out'
+        });
+
+        // Animate create post section
+        gsap.from('.create-post-section', {
+            y: 50,
+            opacity: 0,
+            duration: 1,
+            delay: 0.3,
+            ease: 'power3.out'
+        });
+
+        // Animate posts with scroll trigger
+        const posts = document.querySelectorAll('.post-card');
+        posts.forEach((post, index) => {
+            gsap.to(post, {
+                scrollTrigger: {
+                    trigger: post,
+                    start: 'top bottom-=100',
+                    toggleActions: 'play none none reverse'
+                },
+                opacity: 1,
+                y: 0,
+                duration: 0.6,
+                delay: index * 0.1,
+                ease: 'power3.out'
+            });
+        });
+
+        // Like button animation
+        const likeButtons = document.querySelectorAll('.like-btn');
+        likeButtons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                gsap.to(btn, {
+                    scale: 1.2,
+                    duration: 0.1,
+                    yoyo: true,
+                    repeat: 1
+                });
+            });
+        });
+    </script>
+</body>
+</html>
