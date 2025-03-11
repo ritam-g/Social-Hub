@@ -1,0 +1,16 @@
+const moongoose=require('mongoose');
+const productSchema=moongoose.Schema({
+    image:String,
+    name:String,
+    price:Number,
+    discount:{
+        type:Number,
+        default:0
+    },
+    description:String,
+    bgcolor:String,
+    panelcolor:String,
+    textcolor:String,
+
+})
+module.exports=mongoose.model('product',productSchema);
