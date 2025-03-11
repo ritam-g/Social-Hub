@@ -1,5 +1,6 @@
 const express=require('express');
 const cookie_parser=require('cookie-parser');
+const db=require('./config/moongoose_connection');
 const path=require('path');
 const app=express();
 app.use(express.json());
