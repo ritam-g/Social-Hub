@@ -1,63 +1,106 @@
-<!DOCTYPE html>
-<html lang="en">
+<%- include('./partials/header') %>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
+<style>
+  .hover-scale {
+    transition: transform 0.3s ease;
+  }
+  .hover-scale:hover {
+    transform: translateY(-3px);
+  }
+  .input-transition {
+    transition: all 0.3s ease;
+  }
+  .input-transition:focus {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+  }
+</style>
 
-<body class="font-['helvetica_now_display']">
-    <nav class="w-full fixed top-0 left-0 px-5 py-3">
-        <h3 class="text-xl">Scatch</h3>
-    </nav>
+<% if(error.length>0){ %>
+<div class="absolute top-5 left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 rounded-md bg-red-500 animate__animated animate__slideInDown animate__faster">
+  <span class="inline-block mt-1 mb-1 text-white">
+    <%= error %>
+  </span>
+</div>
+<% } %>
 
-    <!-- <% if(error.length>0){ %>
-        <div class="absolute top-5 left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 rounded-md bg-red-500">
-            <span class="inline-block mt-1 mb-1 text-white">
-                <%= error %>
-            </span>
-        </div>
-        <% } %> -->
-            <div class="w-full h-screen flex px-20">
-                <div class="w-1/2 flex items-center justify-center h-screen">
-                    <div class="w-full px-32">
-                        <h3 class="text-4xl">welcome to <span class="text-blue-400 font-semibold">Scatch</span></h3>
-                        <h4 class="text-2xl mb-5">create your account</h4>
-                        <form autocomplete="off" action="/users/register" method="post">
-                            <input
-                                class="bg-zinc-100 block w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200"
-                                type="text" placeholder="Full Name" name="fullname">
-                            <input
-                                class="bg-zinc-100 block w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200"
-                                type="email" placeholder="Email" name="email">
-                            <input
-                                class="bg-zinc-100 block w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200"
-                                type="password" placeholder="Password" name="password">
-                            <input class="px-5 rounded-full py-3 mt-2 bg-blue-500 text-white" type="submit"
-                                value="Create My Account">
-                        </form>
-                    </div>
-                </div>
-                <div class="w-1/2 flex items-center justify-center h-screen">
-                    <div class="w-full px-32">
-                        <h4 class="text-2xl capitalize mb-5">login your account</h4>
-                        <form autocomplete="off" action="/users/login" method="post">
-                            <input
-                                class="block bg-zinc-100 w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200"
-                                type="email" placeholder="Email" name="email">
-                            <input
-                                class="block bg-zinc-100 w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200"
-                                type="password" placeholder="Password" name="password">
-                            <input class="px-5 block rounded-full py-3 mt-2 bg-blue-500 text-white" type="submit"
-                                value="Login">
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <%- include('./partials/footer') %>
-        </body>
+<div class="w-full h-screen flex px-20 bg-gradient-to-br from-blue-50 to-purple-50">
+  <!-- Registration Section -->
+  <div class="w-1/2 flex items-center justify-center h-screen">
+    <div class="w-full px-32 animate__animated animate__fadeInLeft">
+      <h3 class="text-4xl mb-3 animate__animated animate__fadeInDown">
+        Welcome to <span class="text-blue-400 font-semibold animate__animated animate__pulse animate__infinite animate__slower">Maty Shop</span>
+      </h3>
+      <h4 class="text-2xl mb-5 text-gray-600 animate__animated animate__fadeInDown animate__delay-1s">
+        Create your account
+      </h4>
+      <form autocomplete="on" action="/users/register" method="post">
+        <input
+          class="input-transition bg-white block w-full px-3 py-3 border-[1px] rounded-lg mb-4 border-zinc-200 hover:border-blue-300 focus:outline-none"
+          type="text" placeholder="Full Name" name="fullname">
+        <input
+          class="input-transition bg-white block w-full px-3 py-3 border-[1px] rounded-lg mb-4 border-zinc-200 hover:border-blue-300 focus:outline-none"
+          type="email" placeholder="Email" name="email">
+        <input
+          class="input-transition bg-white block w-full px-3 py-3 border-[1px] rounded-lg mb-6 border-zinc-200 hover:border-blue-300 focus:outline-none"
+          type="password" placeholder="Password" name="password">
+        <button class="hover-scale w-full px-5 rounded-lg py-3 bg-blue-500 text-white font-semibold transition-all duration-300 hover:bg-blue-600 hover:shadow-lg">
+          Create My Account
+        </button>
+      </form>
+    </div>
+  </div>
 
-        </html>
+  <!-- Divider -->
+  <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-3/4 w-px bg-gray-200 animate__animated animate__fadeIn animate__delay-1s"></div>
+
+  <!-- Login Section -->
+  <div class="w-1/2 flex items-center justify-center h-screen">
+    <div class="w-full px-32 animate__animated animate__fadeInRight">
+      <h4 class="text-2xl mb-5 text-gray-600 animate__animated animate__fadeInDown animate__delay-2s">
+        Login to your account
+      </h4>
+      <form autocomplete="off" action="/users/login" method="post">
+        <input
+          class="input-transition bg-white block w-full px-3 py-3 border-[1px] rounded-lg mb-4 border-zinc-200 hover:border-blue-300 focus:outline-none"
+          type="email" placeholder="Email" name="email">
+        <input
+          class="input-transition bg-white block w-full px-3 py-3 border-[1px] rounded-lg mb-6 border-zinc-200 hover:border-blue-300 focus:outline-none"
+          type="password" placeholder="Password" name="password">
+        <button class="hover-scale w-full px-5 rounded-lg py-3 bg-blue-500 text-white font-semibold transition-all duration-300 hover:bg-blue-600 hover:shadow-lg">
+          Login
+        </button>
+      </form>
+      <div class="mt-6 animate__animated animate__fadeInUp animate__delay-3s">
+        <p class="text-center text-gray-500">
+          Forgot password? 
+          <a href="#" class="text-blue-500 hover:text-blue-700 transition-colors">Click here</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script>
+  // Animate form elements sequentially
+  gsap.from("input", {
+    duration: 0.8,
+    y: 20,
+    opacity: 1,
+    stagger: 0.1,
+    delay: 0.5
+  });
+
+  // Button hover animation
+  document.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('mouseenter', () => {
+      gsap.to(btn, { scale: 1.02, duration: 0.3 });
+    });
+    btn.addEventListener('mouseleave', () => {
+      gsap.to(btn, { scale: 1, duration: 0.3 });
+    });
+  });
+</script>
+
+<%- include('./partials/footer') %>
