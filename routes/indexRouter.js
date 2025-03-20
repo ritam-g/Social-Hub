@@ -32,6 +32,7 @@ router.get("/",(req,res)=>{
     
 
 router.get("/shop",isLoggedIn,(req,res)=>{
-    res.render("shop",{products:products});
+  res.render("shop",{products:products});
 })
+
 module.exports=router;

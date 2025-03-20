@@ -17,6 +17,13 @@ if (process.env.NODE_ENV === 'development') {
         res.send(creatOwner).status(201);
 })
 }
+router.get("/admin",(req,res)=>{
+    res.render("createproducts")
+
+})
+router.post("/owners/admn/createproduce",(req,res)=>{
+    
+})
 
 // console.log(process.env.NODE_ENV);
 

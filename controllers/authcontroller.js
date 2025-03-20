@@ -62,3 +62,7 @@ module.exports.loginuser=async (req,res)=>{
         }
     });
 }
+module.exports.logout=async(req,res)=>{
+    res.cookie("token","");
+    res.render("index",{error:'please login'});
+}

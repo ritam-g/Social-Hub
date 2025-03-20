@@ -5,7 +5,7 @@ const express = require('express');
 // const {generateToken}=require("../utils/generatetoken");
 const cookie_parser=require('cookie-parser');
 
-const { registeruser ,loginuser }=require("../controllers/authcontroller");
+const { registeruser ,loginuser, logout }=require("../controllers/authcontroller");
 // const {loginuser}=require("../controllers/authcontroller")
 require('dotenv').config();
 
@@ -19,5 +19,6 @@ router.get("/", (req, res) => {
 router.post("/register", registeruser);
 
 router.post("/login",loginuser);
+router.get("/logout",logout);
 
 module.exports = router;

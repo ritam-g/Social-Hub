@@ -3,7 +3,7 @@ process.env.JWT_TOKEN="BHAGE SALA";
 const userModel=require('../models/user_model');
 module.exports=async(req,res,next)=>{
     if(!req.cookies.token || req.cookies.token==""){
-        res.send("please login");
+        res.redirect("/index");
         return;
     }
     try {

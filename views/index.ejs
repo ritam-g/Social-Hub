@@ -16,13 +16,25 @@
   }
 </style>
 
-<% if(error.length>0){ %>
-<div class="absolute top-5 left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 rounded-md bg-red-500 animate__animated animate__slideInDown animate__faster">
-  <span class="inline-block mt-1 mb-1 text-white">
-    <%= error %>
-  </span>
-</div>
-<% } %>
+<% if(error.length > 0) { %>
+  <div id="error-message" class="absolute top-5 left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 rounded-md bg-red-500 animate__animated animate__slideInDown animate__faster">
+    <span class="inline-block mt-1 mb-1 text-white">
+      <%= error %>
+    </span>
+  </div>
+  <script>
+    // Hide the error message after 3 seconds
+    setTimeout(() => {
+      const errorMessage = document.getElementById('error-message');
+      if (errorMessage) {
+        // Fade out animation using animate.css
+        errorMessage.classList.add('animate__fadeOutUp');
+        setTimeout(() => errorMessage.style.display = 'none', 500); // Remove after animation ends
+      }
+    }, 3000);
+  </script>
+  <% } %>
+  
 
 <div class="w-full h-screen flex px-20 bg-gradient-to-br from-blue-50 to-purple-50">
   <!-- Registration Section -->
