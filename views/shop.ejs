@@ -1,50 +1,85 @@
 <%- include('./partials/header') %>
-    <div class="w-full h-screen flex items-start px-20 py-20">
-        <div class="w-[25%] flex h-screen flex-col items-start">
-            <div class="flex items-center gap-2">
-                <h3>sort by</h3>
-                <form action="/shop">
-                    <select class="border-[1px] px-2 py-1" name="sortby" id="">
-                        <option value="popular">Popular</option>
-                        <option value="newest">Newest</option>
-                    </select>
-                </form>
-            </div>
-            <div class="flex flex-col mt-20">
-                <a class="block w-fit mb-2" href="">New Collection</a>
-                <a class="block w-fit mb-2" href="">All Products</a>
-                <a class="block w-fit mb-2" href="">Discounted Products</a>
-            </div>
-            <div class="mt-32">
-                <a class="block w-fit mb-2" href="">Filter by :</a>
-                <a class="block w-fit mb-2" href="">Availability</a>
-                <a class="block w-fit mb-2" href="">Discount</a>
-            </div>
+
+<!-- Main Container -->
+<div class="w-full h-screen flex items-start px-20 py-20">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="w-1/4 h-screen flex flex-col items-start opacity-0 translate-x-[-50px]">
+        <!-- Sort By Section -->
+        <div class="flex items-center gap-2">
+            <h3 class="font-semibold">Sort by</h3>
+            <form action="/shop">
+                <label for="sortby" class="sr-only">Sort Products</label>
+                <select id="sortby" name="sortby" class="border px-2 py-1 rounded transition hover:shadow-lg">
+                    <option value="popular">Popular</option>
+                    <option value="newest">Newest</option>
+                </select>
+            </form>
         </div>
-        <div class="w-[75%] flex flex-col gap-5 h-screen">
-            <div class="flex items-start gap-5">
-                <% products.forEach(function(product){ %>
-                    <div class="w-60">
-                        <div class="w-full h-52 flex items-center justify-center bg-[<%= product.bgcolor %>]">
-                            <img class="h-[12rem]" src="data:image/jpeg;base64,<%= product.image.toString('base64') %>"
-                                alt="">
-                        </div>
-                        <div
-                            class="flex justify-between bg-[<%= product.panelcolor %>] items-center px-4 py-4 text-[<%= product.textcolor %>]">
-                            <div>
-                                <h3>
-                                    <%= product.name %>
-                                </h3>
-                                <h4>₹ <%= product.price %>
-                                </h4>
-                            </div>
-                            <a class="w-7 h-7 flex items-center justify-center rounded-full bg-white" href="">
-                                <i class="ri-add-line"></i>
-                            </a>
-                        </div>
+
+        <!-- Navigation Links -->
+        <nav class="mt-10 space-y-2">
+            <a class="block hover:text-blue-500 transition duration-300" href="#">New Collection</a>
+            <a class="block hover:text-blue-500 transition duration-300" href="#">All Products</a>
+            <a class="block hover:text-blue-500 transition duration-300" href="#">Discounted Products</a>
+        </nav>
+
+        <!-- Filter Section -->
+        <div class="mt-16">
+            <h4 class="font-semibold">Filter by:</h4>
+            <nav class="mt-2 space-y-2">
+                <a class="block hover:text-blue-500 transition duration-300" href="#">Availability</a>
+                <a class="block hover:text-blue-500 transition duration-300" href="#">Discount</a>
+            </nav>
+        </div>
+    </aside>
+
+    <!-- Product Display Section -->
+    <main class="w-3/4 flex flex-col gap-5 h-screen">
+        <div id="products" class="flex flex-wrap gap-5 opacity-0 translate-y-10">
+            <% products.forEach(function(product) { %>
+                <div class="w-60 shadow-lg rounded overflow-hidden transform scale-95 hover:scale-100 transition duration-300">
+                    <!-- Product Image -->
+                    <div class="w-full h-52 flex items-center justify-center bg-[<%= product.bgcolor %>]">
+                        <img class="h-48 object-contain transition transform hover:scale-110 duration-300" 
+                             src="data:image/jpeg;base64,<%= product.image.toString('base64') %>" 
+                             alt="<%= product.name %>">
                     </div>
-                    <% }) %>
-            </div>
+
+                    <!-- Product Details -->
+                    <div class="flex justify-between items-center px-4 py-4 bg-[<%= product.panelcolor %>] text-[<%= product.textcolor %>]">
+                        <div>
+                            <h3 class="font-semibold"><%= product.name %></h3>
+                            <h4 class="text-lg font-medium">₹ <%= product.price %></h4>
+                        </div>
+                        <a class="w-8 h-8 flex items-center justify-center rounded-full bg-white shadow-md hover:bg-gray-100 transform hover:scale-110 transition duration-300 ease-in-out" href="#">
+                            <i class="ri-add-line text-lg"></i>
+                        </a>
+                    </div>
+                </div>
+            <% }) %>
         </div>
-    </div>
-    <%- include('./partials/footer') %>
+    </main>
+</div>
+
+<!-- GSAP Animation Script -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        gsap.to("#sidebar", { 
+            opacity: 1, 
+            x: 0, 
+            duration: 1, 
+            ease: "power3.out"
+        });
+
+        gsap.to("#products", { 
+            opacity: 1, 
+            y: 0, 
+            duration: 1, 
+            ease: "power3.out", 
+            delay: 0.5 
+        });
+    });
+</script>
+
+<%- include('./partials/footer') %>

@@ -2,7 +2,7 @@ const express=require('express');
 const upload=require('../config/multer-config');
 const produtmodel=require('../models/product_model');
 const router=express.Router();
-router.post("/create",upload.single('image'),async (req,res)=>{
+router.post("/create",upload.single("image"),async (req,res)=>{
    try {
     const {name,price,discount,bgcolor,panelcolor,textcolor}=req.body;
     let createdproduct=await produtmodel.create({
