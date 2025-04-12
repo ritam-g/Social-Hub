@@ -10,6 +10,16 @@
 </head>
 
 <body class="font-['helvetica_now_display']">
-    <nav class="w-full fixed top-0 left-0 px-5 py-3">
+    <nav class="w-full flex justify-between px-5 py-3">
         <h3 class="text-xl">Maty Shop</h3>
+        <% var loogdin = typeof loogdin !== "undefined" ? loogdin : true %>
+        <% if(loogdin) { %>
+            <div class="flex gap-5">
+                <a href="/shop">Shop</a>
+                <a href="/cart">Cart</a>
+                <a href="/users/myaccount">My Account</a>
+                <a class="text-red-500" href="/users/logout">logout</a>
+            </div>
+        <% } %>
+       
     </nav>

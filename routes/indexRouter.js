@@ -2,6 +2,8 @@ const express=require('express');
 const router=express.Router();
 const isLoggedIn=require("../middlewares/isloogedin");
 const product_model = require('../models/product_model');
+const user_model = require('../models/user_model');
+// const user_model = require('../models/user_model');
 
 
 // it is nly for testing
@@ -28,7 +30,7 @@ const product_model = require('../models/product_model');
   //NOTE - untill here
 
 router.get("/",(req,res)=>{
-    res.render("index",{error:''});
+    res.render("index",{error:'',loogdin:false});
 });
     
 
@@ -36,5 +38,18 @@ router.get("/shop",isLoggedIn,async (req,res)=>{
   let products=await product_model.find();
   res.render("shop",{products});
 })
+router.get("/addtocart/:id", isLoggedIn, async (req, res) => {
+  try {
+    const user = await user_model.findOne({ email: req.user.email });
+    user.cart.push(req.params.id);
+    await user.save();
+
+    // ✅ Redirect with query parameter (not session)
+    res.redirect("/index/shop?added=true");
+  } catch (error) {
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 
 module.exports=router;
