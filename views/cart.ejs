@@ -1,46 +1,96 @@
 <%- include('./partials/header') %>
-    <div class="w-full h-screen flex items-start px-20 py-20 gap-10">
-        <div class="w-[30%] rounded-md overflow-hidden">
-            <div class="w-full h-80 bg-yellow-500"></div>
-            <div class="w-full flex justify-between px-5 py-4">
-                <h3 class="text-2xl">Clinge Bag</h3>
-                <div class="flex items-center gap-2">
-                    <i class="w-7 h-7 bg-white flex rounded-full items-center justify-center ri-add-line"></i>
-                    <div class="px-2 py-1 rounded-md bg-white text-black">01</div>
-                    <i class="w-7 h-7 bg-white flex rounded-full items-center justify-center ri-subtract-line"></i>
+
+<div class="w-full min-h-screen flex flex-col gap-16 px-20 py-20">
+    <% user.cart.forEach((product, index) => { %>
+        <div class="w-full flex items-start gap-10 cart-item opacity-0 translate-y-10">
+            <!-- Product Preview Card -->
+            <div class="w-[30%] rounded-md overflow-hidden shadow-md">
+                <div class="w-full h-80 flex items-center justify-center scale-90 transition-transform duration-500" style="background-color: <%= product.bgcolor %>;">
+                    <% if (product.image) { %>
+                        <img class="h-[18rem] product-image" src="data:image/jpg;base64,<%= product.image.toString('base64') %>" alt="product-<%= index %>">
+                    <% } else { %>
+                        <div class="text-red-500">No image available</div>
+                    <% } %>
+                </div>
+                <div class="w-full flex justify-between px-5 py-4" style="background-color: <%= product.panelcolor %>; color: <%= product.textcolor %>;">
+                    <h3 class="text-2xl"><%= product.name || 'Unnamed Product' %></h3>
+                    <div class="flex items-center gap-2">
+                        <i class="w-7 h-7 bg-white flex rounded-full items-center justify-center ri-add-line"></i>
+                        <div class="px-2 py-1 rounded-md bg-white text-black">01</div>
+                        <i class="w-7 h-7 bg-white flex rounded-full items-center justify-center ri-subtract-line"></i>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between px-5 py-3" style="background-color: <%= product.panelcolor %>; color: <%= product.textcolor %>;">
+                    <h4 class="text-lg">Net Total</h4>
+                    <h2 class="text-lg">₹ <%= product.price || 0 %></h2>
                 </div>
             </div>
-            <div class="flex items-center justify-between px-5 py-3">
-                <h4 class="text-lg">Net Total</h4>
-                <h2 class="text-lg">₹ 1200</h2>
+
+            <!-- Price Breakdown -->
+            <div class="w-[70%] fade-in opacity-0 translate-y-10 delay-150">
+                <h3 class="text-xl">Price Breakdown</h3>
+                <div class="px-10 mt-5">
+                    <div class="flex mt-2">
+                        <h4 class="w-1/3">Total MRP</h4>
+                        <h4>₹ <%= product.price || 0 %></h4>
+                    </div>
+                    <div class="flex mt-2">
+                        <h4 class="w-1/3">Discount on MRP</h4>
+                        <h4>₹ <%= product.discount || 0 %></h4>
+                    </div>
+                    <div class="flex mt-2">
+                        <h4 class="w-1/3">Platform Fee</h4>
+                        <h4>₹ 20</h4>
+                    </div>
+                    <div class="flex mt-2">
+                        <h4 class="w-1/3">Shipping Fee</h4>
+                        <h4>FREE</h4>
+                    </div>
+                </div>
+
+                <div class="w-full h-[1px] bg-black mt-10"></div>
+
+                <div class="flex mt-5">
+                    <h3 class="w-1/3 text-xl">Total Amount</h3>
+                    <h3 class="font-semibold text-xl text-green-600">
+                        ₹ <%= (product.price || 0) - (product.discount || 0) + 20 %>
+                    </h3>
+                </div>
             </div>
         </div>
-        <div class="w-[70%]">
-            <h3 class="text-xl">Price Breakdown</h3>
-            <div class="px-10 mt-5">
-                <div class="flex mt-2">
-                    <h4 class="w-1/3">Total MRP</h4>
-                    <h4>₹ 1920</h4>
-                </div>
-                <div class="flex mt-2">
-                    <h4 class="w-1/3">Discount on MRP</h4>
-                    <h4>₹ 0</h4>
-                </div>
-                <div class="flex mt-2">
-                    <h4 class="w-1/3">Platform Fee</h4>
-                    <h4>₹ 20</h4>
-                </div>
-                <div class="flex mt-2">
-                    <h4 class="w-1/3">Shipping Fee</h4>
-                    <h4>FREE</h4>
-                </div>
-            </div>
-            <div class="w-full h-[1px] bg-black mt-10"></div>
-            <div class="flex mt-5">
-                <h3 class="w-1/3 text-xl">Total Amount</h3>
-                <h3 class="font-semibold text-xl text-green-600">₹ 1940</h3>
-            </div>
-            <form action=""></form>
-        </div>
-    </div>
-    <%- include('./partials/footer') %>
+    <% }) %>
+</div>
+
+<!-- GSAP Animation Script -->
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    gsap.utils.toArray(".cart-item").forEach((item, i) => {
+      gsap.to(item, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power2.out",
+        delay: i * 0.2,
+      });
+    });
+
+    gsap.utils.toArray(".fade-in").forEach((section, i) => {
+      gsap.to(section, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power1.out",
+        delay: i * 0.3 + 0.5,
+      });
+    });
+
+    gsap.to(".product-image", {
+      scale: 1,
+      duration: 1,
+      delay: 0.3,
+      ease: "elastic.out(1, 0.5)"
+    });
+  });
+</script>
+
+<%- include('./partials/footer') %>

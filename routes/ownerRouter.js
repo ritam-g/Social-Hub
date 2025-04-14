@@ -1,6 +1,7 @@
 const express=require('express');
 const ownerModel=require('../models/owner_model');
 const router=express.Router();
+const isLoggedIn=require("../middlewares/isloogedin");
 if (process.env.NODE_ENV === 'development') {
     router.post("/create",async (req,res)=>{
         
@@ -17,7 +18,7 @@ if (process.env.NODE_ENV === 'development') {
         res.send(creatOwner).status(201);
 })
 }
-router.get("/admin",(req,res)=>{
+router.get("/admin",isLoggedIn,(req,res)=>{
     res.render("createproducts")
 
 })

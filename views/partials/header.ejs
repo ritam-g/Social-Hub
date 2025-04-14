@@ -7,6 +7,9 @@
     <title>Document</title>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- GSAP CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
 </head>
 
 <body class="font-['helvetica_now_display']">
@@ -15,8 +18,8 @@
         <% var loogdin = typeof loogdin !== "undefined" ? loogdin : true %>
         <% if(loogdin) { %>
             <div class="flex gap-5">
-                <a href="/shop">Shop</a>
-                <a href="/cart">Cart</a>
+                <a href="/index/shop">Shop</a>
+                <a href="/index/cart">Cart</a>
                 <a href="/users/myaccount">My Account</a>
                 <a class="text-red-500" href="/users/logout">logout</a>
             </div>

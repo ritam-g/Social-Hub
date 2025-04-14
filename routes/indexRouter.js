@@ -38,6 +38,13 @@ router.get("/shop",isLoggedIn,async (req,res)=>{
   let products=await product_model.find();
   res.render("shop",{products});
 })
+router.get("/cart", isLoggedIn, async (req, res) => {
+  const user = await user_model
+    .findOne({ email: req.user.email })
+    .populate("cart"); // ✅ this will replace ObjectIds with full product docs
+
+  res.render("cart", { user });
+});
 router.get("/addtocart/:id", isLoggedIn, async (req, res) => {
   try {
     const user = await user_model.findOne({ email: req.user.email });
