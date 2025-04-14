@@ -30,7 +30,7 @@ module.exports.registeruser= async (req, res) => {
                     let token=generateToken(createduser);
                     // res.send("comrex user registered");
                     res.cookie("token",token)//NOTE - ITS SENDING THE TOKEN TO THE WEBSITE OF THE CLIENT
-                    res.send("user created");
+                    res.render("after_login");
                     
                 }
                 
@@ -55,7 +55,7 @@ module.exports.loginuser=async (req,res)=>{
             //TODO - we have TO RENDER THE PROFILE EJS PAGE
             let token=generateToken(user);
             res.cookie("token",token);
-            res.send("your succesfully looged in");
+            res.render("after_login");
         }
         else{
             res.send("invalid email and password");

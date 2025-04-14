@@ -22,6 +22,9 @@ router.get("/admin",isLoggedIn,(req,res)=>{
     res.render("createproducts")
 
 })
+router.get("/login", (req,res)=>{
+    res.render("owner-login");
+})
 router.post("/owners/admn/createproduce",(req,res)=>{
     
 })
