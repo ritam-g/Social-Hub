@@ -1,7 +1,12 @@
-const jwt=require('jsonwebtoken');
-process.env.JWT_TOKEN="BHAGE SALA";
-let generateToken=(usser)=>{
-    return jwt.sign({email:usser.email,id:usser._id},process.env.JWT_TOKEN);                
+const jwt = require('jsonwebtoken');
+
+const generateToken = (user) => {
+    const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
+    return jwt.sign(
+        { email: user.email, id: user._id },
+        JWT_SECRET,
+        { expiresIn: '24h' }
+    );
 }
 
-module.exports.generateToken=generateToken;
+module.exports = { generateToken };

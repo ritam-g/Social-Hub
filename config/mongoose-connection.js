@@ -2,17 +2,19 @@ process.env.DEBUG = 'development:mongoose';
 process.env.NODE_ENV = 'development';
 const mongoose = require('mongoose');
 const debug = require("debug")("development:mongoose");
-const config=require('config');
-debug('Connected to MongoDB');
+
+// Use environment variables for MongoDB connection
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/EcommerceDB';
+
 mongoose
-    .connect(`${config.get('MONGODB_URL')}/EcommerceDB`)//NOTE - `${config.get('MONGODB_URL')}/EcommerceDB` is the connection string to the database.
-                                                        //we directly connect to the database using the connection string.
+    .connect(MONGODB_URI)
     .then(() => {
-        debug('Connected to MongoDB');
+        console.log('Connected to MongoDB');
     })
     .catch((err) => {
-        console.log(err);
-    })
+        console.error('MongoDB connection error:', err);
+    });
+
 module.exports = mongoose.connection;
 //NOTE - mongoose.connection is an object that represents the connection to the database.
 //  It is used to perform operations on the database.

@@ -15,13 +15,18 @@
 <body class="font-['helvetica_now_display']">
     <nav class="w-full flex justify-between px-5 py-3">
         <h3 class="text-xl">Maty Shop</h3>
-        <% var loogdin = typeof loogdin !== "undefined" ? loogdin : true %>
-        <% if(loogdin) { %>
+        <% var loggedin = typeof loggedin !== "undefined" ? loggedin : false %>
+        <% if(loggedin) { %>
             <div class="flex gap-5">
                 <a href="/index/shop">Shop</a>
                 <a href="/index/cart">Cart</a>
                 <a href="/users/myaccount">My Account</a>
                 <a class="text-red-500" href="/users/logout">logout</a>
+            </div>
+        <% } else { %>
+            <div class="flex gap-5">
+                <a href="/users/login">Login</a>
+                <a href="/users/register">Register</a>
             </div>
         <% } %>
        

@@ -30,32 +30,40 @@ const user_model = require('../models/user_model');
   //NOTE - untill here
 
 router.get("/",(req,res)=>{
-    res.render("index",{error:'',loogdin:false});
+    res.render("index",{error:'', loggedin: false});
 });
     
 
 router.get("/shop",isLoggedIn,async (req,res)=>{
-  let products=await product_model.find();
-  res.render("shop",{products});
-})
+    try {
+        let products = await product_model.find();
+        res.render("shop", { products, loggedin: true });
+    } catch (error) {
+        res.status(500).render("error", { error: "Failed to fetch products" });
+    }
+});
 router.get("/cart", isLoggedIn, async (req, res) => {
-  const user = await user_model
-    .findOne({ email: req.user.email })
-    .populate("cart"); // ✅ this will replace ObjectIds with full product docs
-
-  res.render("cart", { user });
+    try {
+        const user = await user_model
+            .findOne({ email: req.user.email })
+            .populate("cart");
+        res.render("cart", { user, loggedin: true });
+    } catch (error) {
+        res.status(500).render("error", { error: "Failed to fetch cart" });
+    }
 });
 router.get("/addtocart/:id", isLoggedIn, async (req, res) => {
-  try {
-    const user = await user_model.findOne({ email: req.user.email });
-    user.cart.push(req.params.id);
-    await user.save();
-
-    // ✅ Redirect with query parameter (not session)
-    res.redirect("/index/shop?added=true");
-  } catch (error) {
-    res.status(500).send("Internal Server Error");
-  }
+    try {
+        const user = await user_model.findOne({ email: req.user.email });
+        if (!user) {
+            return res.status(404).send("User not found");
+        }
+        user.cart.push(req.params.id);
+        await user.save();
+        res.redirect("/index/shop?added=true");
+    } catch (error) {
+        res.status(500).send("Internal Server Error");
+    }
 });
 
 
