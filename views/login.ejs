@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Sparkle Social</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(45deg, #1a1a1a, #2d2d2d);
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .input-effect:focus {
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .floating-shapes div {
+            position: absolute;
+            opacity: 0.1;
+            animation: float 6s infinite;
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen flex items-center justify-center p-4">
+    <!-- Floating Background Shapes -->
+    <div class="floating-shapes">
+        <div class="w-64 h-64 bg-blue-500 rounded-full blur-3xl -top-32 -left-32"></div>
+        <div class="w-64 h-64 bg-purple-500 rounded-full blur-3xl -bottom-32 -right-32"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container max-w-md w-full relative">
+        <!-- Login Form Card -->
+        <div class="glass-effect rounded-2xl p-8 shadow-2xl opacity-0" id="loginCard">
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
+                    Welcome to Sparkle Social
+                </h1>
+                <p class="text-gray-400 mt-2">Sign in to continue your journey</p>
+            </div>
+
+            <!-- Login Form -->
+            <form action="/login" method="post" class="space-y-6">
+                <!-- Email Input -->
+                <div class="space-y-2">
+                    <label class="text-gray-300 text-sm font-medium">Email</label>
+                    <input 
+                        type="email" 
+                        name="email" 
+                        class="w-full px-4 py-3 rounded-lg glass-effect text-white input-effect focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
+                        placeholder="Enter your email"
+                        required
+                    >
+                </div>
+
+                <!-- Password Input -->
+                <div class="space-y-2">
+                    <label class="text-gray-300 text-sm font-medium">Password</label>
+                    <input 
+                        type="password" 
+                        name="password" 
+                        class="w-full px-4 py-3 rounded-lg glass-effect text-white input-effect focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
+                        placeholder="Enter your password"
+                        required
+                    >
+                </div>
+
+                <!-- Submit Button -->
+                <button 
+                    type="submit" 
+                    class="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium hover:opacity-90 transform hover:scale-[1.02] transition-all duration-300"
+                >
+                    Sign In
+                </button>
+
+                <!-- Quick Access Button (only shows if logged in) -->
+                <div id="quickAccess" class="hidden">
+                    <a 
+                        href="/profile" 
+                        class="w-full py-3 bg-gradient-to-r from-green-600 to-teal-600 text-white rounded-lg font-medium hover:opacity-90 transform hover:scale-[1.02] transition-all duration-300 flex items-center justify-center gap-2 mt-4"
+                    >
+                        <span>Quick Access to Profile</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                        </svg>
+                    </a>
+                </div>
+            </form>
+
+            <!-- Footer Links -->
+            <div class="mt-6 text-center text-sm text-gray-400">
+                <p>Don't have an account? 
+                    <a href="/" class="text-blue-500 hover:text-blue-400 transition-colors">Create Account</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // GSAP Animations
+        window.addEventListener('load', () => {
+            // Check if user is logged in (you'll need to implement this based on your auth logic)
+            const isLoggedIn = document.cookie.includes('token=');
+            if (isLoggedIn) {
+                document.getElementById('quickAccess').classList.remove('hidden');
+            }
+
+            // Initial animations
+            gsap.to('#loginCard', {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                ease: 'power3.out'
+            });
+
+            // Input field animations
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.addEventListener('focus', () => {
+                    gsap.to(input, {
+                        scale: 1.02,
+                        duration: 0.2
+                    });
+                });
+
+                input.addEventListener('blur', () => {
+                    gsap.to(input, {
+                        scale: 1,
+                        duration: 0.2
+                    });
+                });
+            });
+
+            // Button hover animation
+            const buttons = document.querySelectorAll('button, a');
+            buttons.forEach(button => {
+                button.addEventListener('mouseenter', () => {
+                    gsap.to(button, {
+                        scale: 1.05,
+                        duration: 0.2
+                    });
+                });
+
+                button.addEventListener('mouseleave', () => {
+                    gsap.to(button, {
+                        scale: 1,
+                        duration: 0.2
+                    });
+                });
+            });
+
+            // Floating shapes animation
+            gsap.to('.floating-shapes div', {
+                y: -30,
+                duration: 2,
+                yoyo: true,
+                repeat: -1,
+                ease: 'power1.inOut',
+                stagger: 0.2
+            });
+        });
+
+        // Form submission animation
+        document.querySelector('form').addEventListener('submit', (e) => {
+            const button = e.target.querySelector('button');
+            gsap.to(button, {
+                scale: 0.95,
+                duration: 0.1,
+                yoyo: true,
+                repeat: 1
+            });
+        });
+    </script>
+</body>
+</html>
