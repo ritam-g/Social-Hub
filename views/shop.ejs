@@ -1,0 +1,116 @@
+<%- include('./partials/header') %>
+
+<!-- ✅ Flash Message Div (initially hidden) -->
+<div id="success-message" style="display: none;"
+     class="fixed top-5 right-5 bg-green-100 text-green-900 px-4 py-2 rounded shadow-lg z-50 transition-all duration-300">
+  ✔️ Item added to cart!
+</div>
+
+<!-- Main Container -->
+<div class="w-full h-screen flex items-start px-20 py-20">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="w-1/4 h-screen flex flex-col items-start opacity-0 translate-x-[-50px]">
+        <!-- Sort By Section -->
+        <div class="flex items-center gap-2">
+            <h3 class="font-semibold">Sort by</h3>
+            <form action="/shop">
+                <label for="sortby" class="sr-only">Sort Products</label>
+                <select id="sortby" name="sortby" class="border px-2 py-1 rounded transition hover:shadow-lg">
+                    <option value="popular">Popular</option>
+                    <option value="newest">Newest</option>
+                </select>
+            </form>
+        </div>
+
+        <!-- Navigation Links -->
+        <nav class="mt-10 space-y-2">
+            <a class="block hover:text-blue-500 transition duration-300" href="#">New Collection</a>
+            <a class="block hover:text-blue-500 transition duration-300" href="#">All Products</a>
+            <a class="block hover:text-blue-500 transition duration-300" href="#">Discounted Products</a>
+        </nav>
+
+        <!-- Filter Section -->
+        <div class="mt-16">
+            <h4 class="font-semibold">Filter by:</h4>
+            <nav class="mt-2 space-y-2">
+                <a class="block hover:text-blue-500 transition duration-300" href="#">Availability</a>
+                <a class="block hover:text-blue-500 transition duration-300" href="#">Discount</a>
+            </nav>
+        </div>
+    </aside>
+
+    <!-- Product Display Section -->
+    <main class="w-3/4 flex flex-col gap-5 h-screen">
+        <div id="products" class="flex flex-wrap gap-5 opacity-0 translate-y-10">
+            <% products.forEach(function(product) { %>
+                <% if (product.name) { %> 
+                    <div class="w-60 shadow-lg rounded overflow-hidden transform scale-95 hover:scale-100 transition duration-300">
+                        <!-- Product Image -->
+                        <div class="w-full h-52 flex items-center justify-center" 
+                             style="background-color: <%= product.bgcolor ? product.bgcolor : '#f3f4f6' %>;">
+                            <img class="h-48 object-contain transition transform hover:scale-110 duration-300" 
+                                 src="data:image/jpeg;base64,<%= product.image.toString('base64') %>" 
+                                 alt="<%= product.name %>">
+                        </div>
+
+                        <!-- Product Details -->
+                        <div class="flex justify-between items-center px-4 py-4" 
+                             style="background-color: <%= product.panelcolor ? product.panelcolor : '#e5e7eb' %>; 
+                                    color: <%= product.textcolor ? product.textcolor : '#000' %>;">
+                            <div>
+                                <h3 class="font-semibold"><%= product.name %></h3>
+                                <h4 class="text-lg font-medium">₹ <%= product.price %></h4>
+                            </div>
+                            <a class="w-8 h-8 flex items-center justify-center rounded-full bg-white shadow-md 
+                                      hover:bg-gray-100 transform hover:scale-110 transition duration-300 ease-in-out" href="/index/addtocart/<%= product._id %>">
+                                <i class="ri-add-line text-lg"></i>
+                            </a>
+                        </div>
+                    </div>
+                <% } %> 
+            <% }); %>
+        </div>
+    </main>
+</div>
+
+<!-- GSAP Animation Script -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Animate sidebar and products
+        gsap.to("#sidebar", { 
+            opacity: 1, 
+            x: 0, 
+            duration: 1, 
+            ease: "power3.out"
+        });
+
+        gsap.to("#products", { 
+            opacity: 1, 
+            y: 0, 
+            duration: 1, 
+            ease: "power3.out", 
+            delay: 0.5 
+        });
+
+        // ✅ Show flash message if ?added=true is in the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const added = urlParams.get("added");
+        const message = document.getElementById("success-message");
+
+        if (added === "true" && message) {
+            message.style.display = "block";
+
+            setTimeout(() => {
+                message.style.opacity = "0";
+                setTimeout(() => message.remove(), 500);
+            }, 2500);
+
+            // ✅ Clean the URL (remove ?added=true)
+            const newUrl = window.location.origin + window.location.pathname;
+            window.history.replaceState({}, document.title, newUrl);
+        }
+    });
+</script>
+
+<%- include('./partials/footer') %>

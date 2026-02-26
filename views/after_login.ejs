@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Enhanced Interactive UI</title>
+
+  <!-- Tailwind CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+  <style>
+    .glass-card {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(15px);
+      border-radius: 1.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+    }
+  </style>
+</head>
+
+<body class="min-h-screen bg-gradient-to-tr from-blue-100 via-purple-100 to-pink-100">
+
+  <!-- 🔗 NAVIGATION BAR -->
+  <nav class="w-full flex justify-between px-5 py-4 bg-white shadow-md">
+    <h3 class="text-xl font-bold text-gray-800">Maty Shop</h3>
+    <% var loogdin = typeof loogdin !== "undefined" ? loogdin : true; %>
+    <% if (loogdin) { %>
+      <div class="flex gap-5 items-center text-sm font-medium">
+        <a href="/index/shop" class="hover:text-blue-600 transition">Shop</a>
+        <a href="/index/cart" class="hover:text-blue-600 transition">Cart</a>
+        <a href="/users/myaccount" class="hover:text-blue-600 transition">My Account</a>
+        <a href="/users/logout" class="text-red-500 hover:underline">Logout</a>
+      </div>
+    <% } %>
+  </nav>
+
+  <!-- 👤 MAIN ACCOUNT CARD -->
+  <div class="flex items-center justify-center p-6">
+    <div class="glass-card p-10 w-full max-w-md flex flex-col gap-6 items-center text-center transform scale-95 opacity-0" id="accountCard">
+      <h1 class="text-2xl font-bold text-gray-800">Welcome to the Portal</h1>
+
+      <!-- Buttons -->
+      <button id="shopBtn" class="w-full px-6 py-3 bg-blue-500 text-white font-semibold rounded-xl shadow-lg transition-all duration-300 hover:bg-blue-600 hover:shadow-blue-300 hover:scale-105">
+        <a href="/index/shop">🛒 Shop</a>
+      </button>
+
+      <button id="accountBtn" class="w-full px-6 py-3 bg-green-500 text-white font-semibold rounded-xl shadow-lg transition-all duration-300 hover:bg-green-600 hover:shadow-green-300 hover:scale-105">
+        <a href="/users/myaccount">👤 My Account</a>
+      </button>
+
+      <button id="ownerBtn" class="w-full px-6 py-3 bg-red-500 text-white font-semibold rounded-xl shadow-lg transition-all duration-300 hover:bg-red-600 hover:shadow-red-300 hover:scale-105">
+        <a href="/owners/Login">🔐 Owner Login</a>
+      </button>
+    </div>
+  </div>
+
+  <!-- 🎬 ANIMATIONS -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const shopBtn = document.getElementById("shopBtn");
+      const accountBtn = document.getElementById("accountBtn");
+      const ownerBtn = document.getElementById("ownerBtn");
+      const card = document.getElementById("accountCard");
+
+      // Entrance animation for card
+      gsap.to(card, {
+        duration: 1,
+        opacity: 1,
+        scale: 1,
+        ease: "power2.out"
+      });
+
+      // Button interactions
+      shopBtn.addEventListener("click", () => {
+        gsap.fromTo(shopBtn, { scale: 1 }, { scale: 1.15, duration: 0.3, yoyo: true, repeat: 1, ease: "bounce.out" });
+      });
+
+      accountBtn.addEventListener("click", () => {
+        gsap.fromTo(accountBtn, { y: 0, opacity: 0.7 }, { y: -10, opacity: 1, duration: 0.4, ease: "power2.out" });
+      });
+
+      ownerBtn.addEventListener("click", () => {
+        gsap.fromTo(ownerBtn, { rotation: 0 }, { rotation: 5, duration: 0.2, yoyo: true, repeat: 3, ease: "elastic.out(1, 0.3)" });
+      });
+    });
+  </script>
+
+</body>
+</html>
